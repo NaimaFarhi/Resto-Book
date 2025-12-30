@@ -1,0 +1,94 @@
+﻿@model RestoBook_MiniProjet.ViewModels.Admin.AdminDashboardViewModel
+
+<div class="dashboard-container">
+    <div class="page-header">
+        <h2>Admin Dashboard</h2>
+    </div>
+
+    <!-- STATS GRID -->
+    <div class="stat-grid">
+        <div class="stat-card">
+            <h3>Total Reservations</h3>
+            <div class="value">@Model.TotalReservations</div>
+        </div>
+        <div class="stat-card">
+            <h3>Pending</h3>
+            <div class="value" style="color: #d97706">@Model.PendingReservations</div>
+        </div>
+        <div class="stat-card">
+            <h3>Confirmed</h3>
+            <div class="value" style="color: #16a34a">@Model.ConfirmedReservations</div>
+        </div>
+        <div class="stat-card">
+            <h3>Today</h3>
+            <div class="value">@Model.TodayReservations</div>
+        </div>
+        <div class="stat-card">
+            <h3>Menu Items</h3>
+            <div class="value">@Model.TotalMenuItems</div>
+        </div>
+        <div class="stat-card">
+            <h3>Categories</h3>
+            <div class="value">@Model.TotalCategories</div>
+        </div>
+    </div>
+
+    <!-- CHARTS GRID -->
+    <div class="charts-grid">
+        <div class="chart-card">
+            <h3>Reservation Status</h3>
+            <div class="chart-container">
+                <canvas id="statusChart"></canvas>
+            </div>
+        </div>
+        <div class="chart-card">
+            <h3>Last 7 Days</h3>
+            <div class="chart-container">
+                <canvas id="weeklyChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctxStatus = document.getElementById('statusChart').getContext('2d');
+    new Chart(ctxStatus, {
+        type: 'doughnut',
+        data: {
+            labels: ['Pending', 'Confirmed', 'Cancelled'],
+            datasets: [{
+                data: [@Model.PendingReservations, @Model.ConfirmedReservations, @Model.CancelledReservations],
+                backgroundColor: ['#fbbf24', '#22c55e', '#ef4444'],
+                borderWidth: 0
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { position: 'bottom' } }
+        }
+    });
+
+    const ctxWeekly = document.getElementById('weeklyChart').getContext('2d');
+    new Chart(ctxWeekly, {
+        type: 'line',
+        data: {
+            labels: @Html.Raw(Json.Serialize(Model.WeeklyReservationsDates)),
+            datasets: [{
+                label: 'Reservations',
+                data: @Html.Raw(Json.Serialize(Model.WeeklyReservationsCounts)),
+                borderColor: '#FA055B',
+                backgroundColor: 'rgba(250, 5, 91, 0.1)',
+                tension: 0.3,
+                fill: true
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: { y: { beginAtZero: true, ticks: { precision: 0 } } }
+        }
+    });
+</script>

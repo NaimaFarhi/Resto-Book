@@ -1,0 +1,39 @@
+﻿@model RestoBook_MiniProjet.ViewModels.Tables.TableCreateViewModel
+
+<div class="dashboard-container">
+    <div class="form-container">
+        <h2 class="form-title">Add Table</h2>
+
+        <form method="post">
+
+            <div asp-validation-summary="All"
+                 class="validation-summary-errors"></div>
+
+            <div class="form-group">
+                <label asp-for="TableNumber"></label>
+                <input asp-for="TableNumber" />
+                <span asp-validation-for="TableNumber"
+                      class="field-validation-error"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Capacity"></label>
+                <input asp-for="Capacity" />
+                <span asp-validation-for="Capacity"
+                      class="field-validation-error"></span>
+            </div>
+
+            <div class="form-group">
+                <label>
+                    <input asp-for="IsActive" />
+                    Active
+                </label>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Save</button>
+                <a href="/Tables" class="btn">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>

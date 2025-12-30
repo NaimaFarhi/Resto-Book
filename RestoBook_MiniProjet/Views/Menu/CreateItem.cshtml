@@ -1,0 +1,60 @@
+﻿@model RestoBook_MiniProjet.ViewModels.Menu.MenuItemViewModel
+
+<div class="dashboard-container">
+    <div class="page-header">
+        <h2>Create Menu Item</h2>
+    </div>
+
+    <div class="card" style="max-width: 600px; margin: 0 auto;">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="Name">Item Name</label>
+                <input asp-for="Name" class="form-control" placeholder="e.g., Caesar Salad" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Description">Description</label>
+                <textarea asp-for="Description" rows="3" class="form-control" placeholder="Describe your dish..."></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Price">Price ($)</label>
+                <input asp-for="Price" type="number" step="0.01" class="form-control" placeholder="0.00" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="MenuCategoryId">Category</label>
+                <select asp-for="MenuCategoryId" class="form-control">
+                    <option value="">-- Select Category --</option>
+                    @foreach (var cat in ViewBag.Categories)
+                    {
+                        <option value="@cat.Id">@cat.Name</option>
+                    }
+                </select>
+                <span asp-validation-for="MenuCategoryId" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="ImageUrl">Image URL</label>
+                <input asp-for="ImageUrl" type="url" class="form-control" placeholder="https://example.com/image.jpg" />
+                <small class="form-text text-muted">Optional: Direct URL to image</small>
+                <span asp-validation-for="ImageUrl" class="text-danger"></span>
+            </div>
+
+            <div class="form-check">
+                <input asp-for="IsAvailable" type="checkbox" class="form-check-input" id="availableCheck" />
+                <label class="form-check-label" for="availableCheck">Available</label>
+            </div>
+
+            <div style="margin-top: 20px;">
+                <button type="submit" class="btn btn-primary">Create Item</button>
+                <a href="/Menu/ManageItems" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>

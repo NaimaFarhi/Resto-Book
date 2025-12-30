@@ -1,0 +1,125 @@
+﻿@model List<RestoBook_MiniProjet.ViewModels.Reservations.ReservationListViewModel>
+
+<div class="dashboard-container">
+    <div class="page-header">
+        <h2>All Reservations</h2>
+        <a href="/Reservations/Create" class="btn btn-primary">New Reservation</a>
+    </div>
+
+    <!-- Search/Filter Section -->
+    <div class="card" style="margin-bottom: 20px;">
+        <form method="get" style="display: flex; gap: 12px; align-items: flex-end;">
+            <div style="flex: 1;">
+                <label style="display: block; font-size: 14px; color: #374151; margin-bottom: 6px;">Search</label>
+                <input type="text" name="searchString" value="@ViewBag.SearchString"
+                       placeholder="Customer, table, status, time..."
+                       style="width: 100%; padding: 10px 12px; border: 1px solid #E5E7EB; border-radius: 6px;" />
+            </div>
+            <div style="flex: 1;">
+                <label style="display: block; font-size: 14px; color: #374151; margin-bottom: 6px;">Date</label>
+                <input type="date" name="searchDate" value="@ViewBag.SearchDate"
+                       style="width: 100%; padding: 10px 12px; border: 1px solid #E5E7EB; border-radius: 6px;" />
+            </div>
+            <button type="submit" class="btn btn-primary">Search</button>
+            <a href="/Reservations" class="btn">Clear</a>
+        </form>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="card" style="text-align: center; padding: 40px;">
+            <p style="color: #6B7280;">No reservations found.</p>
+        </div>
+    }
+    else
+    {
+        <div class="card">
+            <div style="overflow-x: auto;">
+                <table style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr style="border-bottom: 2px solid #E5E7EB;">
+                            <th style="padding: 12px; text-align: left; font-weight: 600; color: #374151;">Date & Time</th>
+                            <th style="padding: 12px; text-align: left; font-weight: 600; color: #374151;">Customer</th>
+                            <th style="padding: 12px; text-align: left; font-weight: 600; color: #374151;">Guests</th>
+                            <th style="padding: 12px; text-align: left; font-weight: 600; color: #374151;">Table</th>
+                            <th style="padding: 12px; text-align: left; font-weight: 600; color: #374151;">Special Request</th>
+                            <th style="padding: 12px; text-align: left; font-weight: 600; color: #374151;">Status</th>
+                            <th style="padding: 12px; text-align: left; font-weight: 600; color: #374151;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var r in Model)
+                        {
+                            <tr style="border-bottom: 1px solid #E5E7EB;">
+                                <td style="padding: 12px;">@r.ReservationDate.ToString("MMM dd, yyyy h:mm tt")</td>
+                                <td style="padding: 12px;">@r.CustomerName</td>
+                                <td style="padding: 12px;">@r.NumberOfGuests</td>
+                                <td style="padding: 12px;">Table @r.TableNumber</td>
+                                <td style="padding: 12px; max-width: 250px;">
+                                    @if (!string.IsNullOrEmpty(r.SpecialRequest))
+                                    {
+                                        <span title="@r.SpecialRequest" style="display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                                            @r.SpecialRequest
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span style="color: #9CA3AF; font-style: italic;">None</span>
+                                    }
+                                </td>
+                                <td style="padding: 12px;">
+                                    @if (r.Status == RestoBook_MiniProjet.Models.ReservationStatus.Pending)
+                                    {
+                                        <span style="display: inline-block; padding: 4px 12px; background: #FEF3C7; color: #92400E; border-radius: 12px; font-size: 12px; font-weight: 500;">Pending</span>
+                                    }
+                                    else if (r.Status == RestoBook_MiniProjet.Models.ReservationStatus.Confirmed)
+                                    {
+                                        <span style="display: inline-block; padding: 4px 12px; background: #D1FAE5; color: #065F46; border-radius: 12px; font-size: 12px; font-weight: 500;">Confirmed</span>
+                                    }
+                                    else
+                                    {
+                                        <span style="display: inline-block; padding: 4px 12px; background: #FEE2E2; color: #991B1B; border-radius: 12px; font-size: 12px; font-weight: 500;">Cancelled</span>
+                                    }
+                                </td>
+                                <td style="padding: 12px;">
+                                    <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                                        @if (r.Status == RestoBook_MiniProjet.Models.ReservationStatus.Pending)
+                                        {
+                                            <a href="/Reservations/Edit/@r.Id" class="btn btn-sm">Edit</a>
+                                            <form method="post" action="/Reservations/Confirm/@r.Id" style="display: inline;">
+                                                <button type="submit" class="btn btn-sm btn-success">Confirm</button>
+                                            </form>
+                                            <form method="post" action="/Reservations/Refuse/@r.Id" style="display: inline;">
+                                                <button type="submit" class="btn btn-sm btn-danger">Refuse</button>
+                                            </form>
+                                        }
+                                        
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Pagination -->
+        @if (ViewBag.TotalPages > 1)
+        {
+            <div style="margin-top: 20px; display: flex; justify-content: center; gap: 8px;">
+                @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                {
+                    if (i == ViewBag.CurrentPage)
+                    {
+                        <span style="padding: 8px 12px; background: #3B82F6; color: white; border-radius: 6px; font-weight: 500;">@i</span>
+                    }
+                    else
+                    {
+                        <a href="?page=@i&searchString=@ViewBag.SearchString&searchDate=@ViewBag.SearchDate"
+                           style="padding: 8px 12px; background: white; border: 1px solid #E5E7EB; border-radius: 6px; color: #374151; text-decoration: none;">@i</a>
+                    }
+                }
+            </div>
+        }
+    }
+</div>

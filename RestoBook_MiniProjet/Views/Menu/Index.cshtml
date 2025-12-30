@@ -1,0 +1,54 @@
+﻿@model List<RestoBook_MiniProjet.ViewModels.Menu.PublicMenuViewModel>
+
+<div class="dashboard-container">
+    <div class="page-header">
+        <h2>Our Menu</h2>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="card" style="text-align: center; padding: 40px;">
+            <p style="color: #6B7280;">Menu is being updated. Please check back soon!</p>
+        </div>
+    }
+    else
+    {
+        @foreach (var category in Model)
+        {
+            <div class="card" style="margin-bottom: 30px;">
+                <h3 style="margin-bottom: 20px; color: #1F2937; border-bottom: 2px solid #3B82F6; padding-bottom: 10px;">
+                    @category.CategoryName
+                </h3>
+
+                @if (!category.Items.Any())
+                {
+                    <p style="color: #9CA3AF; font-style: italic;">No items available in this category.</p>
+                }
+                else
+                {
+                    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;">
+                        @foreach (var item in category.Items)
+                        {
+                            <div style="border: 1px solid #E5E7EB; border-radius: 8px; padding: 16px; display: flex; flex-direction: column;">
+                                @if (!string.IsNullOrEmpty(item.ImageUrl))
+                                {
+                                    <img src="@item.ImageUrl" alt="@item.Name"
+                                         style="width: 100%; height: 180px; object-fit: cover; border-radius: 6px; margin-bottom: 12px;" />
+                                }
+                                <h4 style="margin: 0 0 8px 0; color: #1F2937; font-size: 18px;">@item.Name</h4>
+                                <p style="color: #6B7280; font-size: 14px; flex-grow: 1; margin-bottom: 12px;">
+                                    @(item.Description ?? "")
+                                </p>
+                                <div style="display: flex; justify-content: space-between; align-items: center;">
+                                    <span style="font-size: 20px; font-weight: 600; color: #3B82F6;">
+                                        $@item.Price.ToString("F2")
+                                    </span>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+        }
+    }
+</div>

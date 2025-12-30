@@ -1,0 +1,63 @@
+﻿@using RestoBook_MiniProjet.ViewModels.Tables
+@model IEnumerable<TableListViewModel>
+
+<div class="dashboard-container">
+    <div class="page-header">
+        <h2>Restaurant Tables</h2>
+        <a href="/Tables/Create" class="btn btn-primary">Add Table</a>
+    </div>
+
+    <!-- Filter Card -->
+    <div class="card" style="margin-bottom: 24px;">
+        <div style="display: flex; gap: 20px; align-items: flex-end;">
+            <div style="flex: 1;">
+                <label style="display: block; font-size: 14px; color: #6B7280; margin-bottom: 6px;">Search Tables</label>
+                <input type="text" 
+                       id="searchInput" 
+                       value="@ViewBag.SearchString" 
+                       placeholder="Search table # or status..." 
+                       style="width: 100%; padding: 10px 12px; border: 1px solid #E5E7EB; border-radius: 6px;" />
+            </div>
+        </div>
+    </div>
+
+    <div id="tableListContainer">
+        <partial name="_TableList" model="Model" />
+    </div>
+</div>
+
+<script>
+    let timeout = null;
+    const searchInput = document.getElementById('searchInput');
+    const container = document.getElementById('tableListContainer');
+
+    searchInput.addEventListener('keyup', function() {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => {
+            fetchList(this.value, 1);
+        }, 300);
+    });
+
+    // Handle Pagination Clicks (Delegation)
+    container.addEventListener('click', function(e) {
+        // Only intercept pagination links, not Edit/Delete action buttons
+        if (e.target.tagName === 'A' && e.target.href && e.target.href.includes('/Tables?page=')) {
+            e.preventDefault();
+            const url = new URL(e.target.href);
+            const page = url.searchParams.get('page');
+            const search = url.searchParams.get('searchString');
+            fetchList(search, page);
+        }
+    });
+
+    function fetchList(search, page) {
+        // Use X-Requested-With header to trigger PartialView return from Controller
+        fetch(`/Tables?searchString=${encodeURIComponent(search)}&page=${page}`, {
+            headers: { 'X-Requested-With': 'XMLHttpRequest' }
+        })
+        .then(response => response.text())
+        .then(html => {
+            container.innerHTML = html;
+        });
+    }
+</script>

@@ -1,0 +1,82 @@
+﻿@model List<RestoBook_MiniProjet.ViewModels.Reservations.ReservationListViewModel>
+
+<div class="dashboard-container">
+    <div class="page-header">
+        <h2>My Reservations</h2>
+        <a href="/Reservations/Create" class="btn btn-primary">New Reservation</a>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="card" style="text-align: center; padding: 40px;">
+            <p style="color: #6B7280; margin-bottom: 20px;">You don't have any reservations yet.</p>
+            <a href="/Reservations/Create" class="btn btn-primary">Make Your First Reservation</a>
+        </div>
+    }
+    else
+    {
+        <div class="card">
+            <div style="overflow-x: auto;">
+                <table style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr style="border-bottom: 2px solid #E5E7EB;">
+                            <th style="padding: 12px; text-align: left; font-weight: 600; color: #374151;">Date & Time</th>
+                            <th style="padding: 12px; text-align: left; font-weight: 600; color: #374151;">Guests</th>
+                            <th style="padding: 12px; text-align: left; font-weight: 600; color: #374151;">Table</th>
+                            <th style="padding: 12px; text-align: left; font-weight: 600; color: #374151;">Special Request</th>
+                            <th style="padding: 12px; text-align: left; font-weight: 600; color: #374151;">Status</th>
+                            <th style="padding: 12px; text-align: left; font-weight: 600; color: #374151;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var r in Model)
+                        {
+                            <tr style="border-bottom: 1px solid #E5E7EB;">
+                                <td style="padding: 12px;">@r.ReservationDate.ToString("MMM dd, yyyy h:mm tt")</td>
+                                <td style="padding: 12px;">@r.NumberOfGuests</td>
+                                <td style="padding: 12px;">Table @r.TableNumber</td>
+                                <td style="padding: 12px; max-width: 200px;">
+                                    @if (!string.IsNullOrEmpty(r.SpecialRequest))
+                                    {
+                                        <span title="@r.SpecialRequest" style="display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                                            @r.SpecialRequest
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span style="color: #9CA3AF; font-style: italic;">None</span>
+                                    }
+                                </td>
+                                <td style="padding: 12px;">
+                                    @if (r.Status == RestoBook_MiniProjet.Models.ReservationStatus.Pending)
+                                    {
+                                        <span style="display: inline-block; padding: 4px 12px; background: #FEF3C7; color: #92400E; border-radius: 12px; font-size: 12px; font-weight: 500;">Pending</span>
+                                    }
+                                    else if (r.Status == RestoBook_MiniProjet.Models.ReservationStatus.Confirmed)
+                                    {
+                                        <span style="display: inline-block; padding: 4px 12px; background: #D1FAE5; color: #065F46; border-radius: 12px; font-size: 12px; font-weight: 500;">Confirmed</span>
+                                    }
+                                    else
+                                    {
+                                        <span style="display: inline-block; padding: 4px 12px; background: #FEE2E2; color: #991B1B; border-radius: 12px; font-size: 12px; font-weight: 500;">Cancelled</span>
+                                    }
+                                </td>
+                                <td style="padding: 12px;">
+                                    <div style="display: flex; gap: 8px;">
+                                        @if (r.Status == RestoBook_MiniProjet.Models.ReservationStatus.Pending)
+                                        {
+                                            <a href="/Reservations/Edit/@r.Id" class="btn btn-sm">Edit</a>
+                                            <form method="post" action="/Reservations/Cancel/@r.Id" style="display: inline;" onsubmit="return confirm('Cancel this reservation?');">
+                                                <button type="submit" class="btn btn-sm btn-danger">Cancel</button>
+                                            </form>
+                                        }
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+</div>

@@ -1,0 +1,69 @@
+﻿@model RestoBook_MiniProjet.ViewModels.Reservations.ReservationCreateViewModel
+
+<div class="dashboard-container">
+    <div class="page-header">
+        <h2>@(User.IsInRole("Admin") ? "New Reservation" : "Book a Table")</h2>
+    </div>
+
+    <div class="card" style="max-width: 600px; margin: 0 auto;">
+        <form method="post">
+            <div asp-validation-summary="All" class="validation-summary-errors"></div>
+
+            <div class="form-group">
+                <label style="display: block; font-size: 14px; color: #374151; margin-bottom: 6px; font-weight: 500;">
+                    Date & Time
+                </label>
+                <input asp-for="ReservationDate" type="datetime-local"
+                       style="width: 100%; padding: 10px 12px; border: 1px solid #E5E7EB; border-radius: 6px; font-size: 14px;" />
+                <span asp-validation-for="ReservationDate" class="text-danger"></span>
+            </div>
+
+            @if (User.IsInRole("Admin"))
+            {
+                <div class="form-group" style="margin-top: 16px;">
+                    <label style="display: block; font-size: 14px; color: #374151; margin-bottom: 6px; font-weight: 500;">
+                        Guest Name / Reservation Name
+                    </label>
+                    <input asp-for="GuestName"
+                           style="width: 100%; padding: 10px 12px; border: 1px solid #E5E7EB; border-radius: 6px; font-size: 14px;"
+                           placeholder="e.g. John Doe (Phone)" />
+                    <span asp-validation-for="GuestName" class="text-danger"></span>
+                </div>
+            }
+
+            <div class="form-group" style="margin-top: 16px;">
+                <label style="display: block; font-size: 14px; color: #374151; margin-bottom: 6px; font-weight: 500;">
+                    Number of Guests
+                </label>
+                <input asp-for="NumberOfGuests" type="number" min="1" max="20"
+                       style="width: 100%; padding: 10px 12px; border: 1px solid #E5E7EB; border-radius: 6px; font-size: 14px;" />
+                <span asp-validation-for="NumberOfGuests" class="text-danger"></span>
+                <small style="display: block; margin-top: 4px; font-size: 12px; color: #6B7280;">
+                    A suitable table will be automatically assigned based on availability.
+                </small>
+            </div>
+
+            <div class="form-group" style="margin-top: 16px;">
+                <label style="display: block; font-size: 14px; color: #374151; margin-bottom: 6px; font-weight: 500;">
+                    Special Request (Optional)
+                </label>
+                <textarea asp-for="SpecialRequest" rows="3"
+                          style="width: 100%; padding: 10px 12px; border: 1px solid #E5E7EB; border-radius: 6px; font-size: 14px; resize: vertical;"
+                          placeholder="e.g. Window seat, high chair needed, birthday celebration..."></textarea>
+                <span asp-validation-for="SpecialRequest" class="text-danger"></span>
+                <small style="display: block; margin-top: 4px; font-size: 12px; color: #6B7280;">
+                    Maximum 500 characters
+                </small>
+            </div>
+
+            <div style="margin-top: 24px; display: flex; gap: 12px;">
+                <button type="submit" class="btn btn-primary">
+                    Confirm Reservation
+                </button>
+                <a href="@(User.IsInRole("Admin") ? "/Reservations" : "/Reservations/MyReservations")" class="btn">
+                    Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</div>

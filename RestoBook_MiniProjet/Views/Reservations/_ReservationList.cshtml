@@ -1,0 +1,77 @@
+@using RestoBook_MiniProjet.ViewModels.Reservations
+@model IEnumerable<ReservationListViewModel>
+
+<div class="table-card">
+    <div class="table-responsive">
+        <table>
+            <thead>
+                <tr>
+                    <th>Customer</th>
+                    <th>Date</th>
+                    <th>Guests</th>
+                    <th>Table</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var r in Model)
+                {
+                    <tr>
+                        <td style="font-weight:500">@r.CustomerName</td>
+                        <td>@r.ReservationDate.ToString("g")</td>
+                        <td>@r.NumberOfGuests people</td>
+                        <td>Table #@r.TableNumber</td>
+                        <td>
+                            @{
+                                var badgeClass = r.Status switch
+                                {
+                                    "Confirmed" => "badge-confirmed",
+                                    "Pending" => "badge-pending",
+                                    "Cancelled" => "badge-refused",
+                                    "Refused" => "badge-refused",
+                                    _ => "badge-pending"
+                                };
+                            }
+                            <span class="badge @badgeClass">@r.Status</span>
+                        </td>
+                        <td>
+                            @if (r.Status == "Pending")
+                            {
+                                <div style="display:flex; gap:8px;">
+                                    <form method="post" action="/Reservations/Confirm/@r.Id">
+                                        <button type="submit" class="btn btn-sm btn-success">Confirm</button>
+                                    </form>
+
+                                    <form method="post" action="/Reservations/Refuse/@r.Id"
+                                          onsubmit="return confirm('Refuse this reservation?');">
+                                        <button type="submit" class="btn btn-sm btn-danger">Refuse</button>
+                                    </form>
+                                </div>
+                            }
+                            else
+                            {
+                                <span style="color:#9ca3af; font-size:13px;">No actions</span>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div style="margin-top:20px; display:flex; justify-content:center; gap:10px;">
+    @{
+        var prevDisabled = ViewBag.CurrentPage > 1 ? "" : "disabled";
+        var nextDisabled = ViewBag.CurrentPage < ViewBag.TotalPages ? "" : "disabled";
+        var prevUrl = ViewBag.CurrentPage > 1 ? $"/Reservations?page={ViewBag.CurrentPage - 1}&searchString={ViewBag.SearchString}" : "#";
+        var nextUrl = ViewBag.CurrentPage < ViewBag.TotalPages ? $"/Reservations?page={ViewBag.CurrentPage + 1}&searchString={ViewBag.SearchString}" : "#";
+    }
+
+    <a href="@prevUrl" class="btn @prevDisabled" style="@(ViewBag.CurrentPage > 1 ? "" : "pointer-events:none; opacity:0.5;")">Previous</a>
+
+    <span style="align-self:center;">Page @ViewBag.CurrentPage of @ViewBag.TotalPages</span>
+
+    <a href="@nextUrl" class="btn @nextDisabled" style="@(ViewBag.CurrentPage < ViewBag.TotalPages ? "" : "pointer-events:none; opacity:0.5;")">Next</a>
+</div>

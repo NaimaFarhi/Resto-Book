@@ -1,0 +1,105 @@
+﻿@model List<RestoBook_MiniProjet.ViewModels.Menu.MenuCategoryViewModel>
+
+<div class="dashboard-container">
+    <div class="page-header">
+        <h2>Manage Categories</h2>
+        <div style="display: flex; gap: 12px;">
+            <a href="/Menu/ManageItems" class="btn">Manage Items</a>
+            <a href="/Menu/CreateCategory" class="btn btn-primary">Add Category</a>
+        </div>
+    </div>
+
+    <div class="card" style="margin-bottom: 24px;">
+        <div style="display: flex; gap: 20px; align-items: flex-end;">
+            <div style="flex: 1;">
+                <label style="display: block; font-size: 14px; color: #6B7280; margin-bottom: 6px;">Search Categories</label>
+                <input type="text"
+                       id="categorySearchInput"
+                       placeholder="Search by category name..."
+                       style="width: 100%; padding: 10px 12px; border: 1px solid #E5E7EB; border-radius: 6px;" />
+            </div>
+        </div>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="card" style="text-align: center; padding: 40px;">
+            <p style="color: #6B7280; margin-bottom: 20px;">No categories yet.</p>
+            <a href="/Menu/CreateCategory" class="btn btn-primary">Create First Category</a>
+        </div>
+    }
+    else
+    {
+        <div class="card">
+            <table class="table" id="categoriesTable">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Display Order</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var cat in Model)
+                    {
+                        <tr>
+                            <td>@cat.Name</td>
+                            <td>@cat.DisplayOrder</td>
+                            <td>
+                                @if (cat.IsActive)
+                                {
+                                    <span class="badge bg-success">Active</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-danger">Inactive</span>
+                                }
+                            </td>
+                            <td>
+                                <div style="display: flex; gap: 8px;">
+                                    <a href="/Menu/EditCategory/@cat.Id" class="btn btn-sm btn-primary">Edit</a>
+                                    <form method="post" action="/Menu/DeleteCategory/@cat.Id" style="display: inline;"
+                                          onsubmit="return confirm('Delete this category?');">
+                                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>
+
+<script>
+    // Client-side search logic to avoid needing a Partial View
+    document.getElementById('categorySearchInput').addEventListener('keyup', function() {
+        const searchText = this.value.toLowerCase();
+        const table = document.getElementById('categoriesTable');
+        const rows = table.getElementsByTagName('tr');
+
+        // Start from 1 to skip the header row
+        for (let i = 1; i < rows.length; i++) {
+            const row = rows[i];
+            const cells = row.getElementsByTagName('td');
+            let found = false;
+
+            // Check if any cell text matches the search
+            if (cells.length > 0) {
+                // Check Name (index 0)
+                const nameText = cells[0].textContent || cells[0].innerText;
+                if (nameText.toLowerCase().indexOf(searchText) > -1) {
+                    found = true;
+                }
+            }
+
+            if (found) {
+                row.style.display = "";
+            } else {
+                row.style.display = "none";
+            }
+        }
+    });
+</script>

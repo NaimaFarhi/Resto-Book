@@ -1,0 +1,90 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>RestoBook - Restaurant Reservation System</title>
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body style="margin: 0; background: #F9FAFB;">
+    
+    <!-- Navigation -->
+    <nav style="background: white; border-bottom: 1px solid #E5E7EB; padding: 20px 0;">
+        <div style="max-width: 1200px; margin: 0 auto; padding: 0 24px; display: flex; justify-content: space-between; align-items: center;">
+            <h1 style="font-size: 24px; font-weight: 700; color: #FA055B; margin: 0;">RestoBook</h1>
+            <div style="display: flex; gap: 12px;">
+                <a href="/Account/Login" class="btn">Login</a>
+                <a href="/Account/Register" class="btn btn-primary">Register</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section style="background: linear-gradient(135deg, #FA055B 0%, #C70449 100%); color: white; padding: 100px 24px; text-align: center;">
+        <div style="max-width: 800px; margin: 0 auto;">
+            <h2 style="font-size: 48px; font-weight: 800; margin-bottom: 24px; line-height: 1.2;">Reserve Your Perfect Table</h2>
+            <p style="font-size: 20px; opacity: 0.95; margin-bottom: 40px; line-height: 1.6;">
+                Experience seamless restaurant reservations with our modern booking system. Check availability, book tables, and manage your reservations all in one place.
+            </p>
+            <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+                <a href="/Account/Register" class="btn btn-primary" style="padding: 14px 32px; font-size: 16px; background: white; color: #FA055B;">Get Started</a>
+                <a href="/Availability" class="btn" style="padding: 14px 32px; font-size: 16px; background: rgba(255,255,255,0.2); color: white; border: 2px solid white;">Check Availability</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section style="max-width: 1200px; margin: 80px auto; padding: 0 24px;">
+        <h3 style="text-align: center; font-size: 36px; font-weight: 700; margin-bottom: 16px; color: #1F2937;">Why Choose RestoBook?</h3>
+        <p style="text-align: center; font-size: 18px; color: #6B7280; margin-bottom: 60px;">Everything you need for a perfect dining experience</p>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px;">
+            <!-- Feature Card 1 -->
+            <div class="card" style="padding: 32px; transition: all 0.3s;">
+                <div style="width: 56px; height: 56px; background: linear-gradient(135deg, #FA055B 0%, #C70449 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 28px; margin-bottom: 20px;">📅</div>
+                <h4 style="font-size: 20px; font-weight: 600; margin-bottom: 12px; color: #1F2937;">Easy Booking</h4>
+                <p style="color: #6B7280; line-height: 1.6;">Book your table in seconds with our intuitive reservation system. Select your preferred date, time, and table size.</p>
+            </div>
+
+            <!-- Feature Card 2 -->
+            <div class="card" style="padding: 32px; transition: all 0.3s;">
+                <div style="width: 56px; height: 56px; background: linear-gradient(135deg, #FA055B 0%, #C70449 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 28px; margin-bottom: 20px;">🔍</div>
+                <h4 style="font-size: 20px; font-weight: 600; margin-bottom: 12px; color: #1F2937;">Real-Time Availability</h4>
+                <p style="color: #6B7280; line-height: 1.6;">Check table availability instantly and see exactly when your preferred tables are free throughout the day.</p>
+            </div>
+
+            <!-- Feature Card 3 -->
+            <div class="card" style="padding: 32px; transition: all 0.3s;">
+                <div style="width: 56px; height: 56px; background: linear-gradient(135deg, #FA055B 0%, #C70449 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 28px; margin-bottom: 20px;">⚡</div>
+                <h4 style="font-size: 20px; font-weight: 600; margin-bottom: 12px; color: #1F2937;">Instant Confirmation</h4>
+                <p style="color: #6B7280; line-height: 1.6;">Receive immediate confirmation of your reservation and manage all your bookings from one convenient dashboard.</p>
+            </div>
+
+            <!-- Feature Card 4 -->
+            <div class="card" style="padding: 32px; transition: all 0.3s;">
+                <div style="width: 56px; height: 56px; background: linear-gradient(135deg, #FA055B 0%, #C70449 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 28px; margin-bottom: 20px;">📱</div>
+                <h4 style="font-size: 20px; font-weight: 600; margin-bottom: 12px; color: #1F2937;">Manage Reservations</h4>
+                <p style="color: #6B7280; line-height: 1.6;">View, edit, or cancel your reservations anytime. Stay in control of your dining plans with complete flexibility.</p>
+            </div>
+
+            <!-- Feature Card 5 -->
+            <div class="card" style="padding: 32px; transition: all 0.3s;">
+                <div style="width: 56px; height: 56px; background: linear-gradient(135deg, #FA055B 0%, #C70449 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 28px; margin-bottom: 20px;">🕐</div>
+                <h4 style="font-size: 20px; font-weight: 600; margin-bottom: 12px; color: #1F2937;">Time Slot Selection</h4>
+                <p style="color: #6B7280; line-height: 1.6;">Choose specific time slots with our 90-minute dining windows. Perfect for planning your day around your meal.</p>
+            </div>
+
+            <!-- Feature Card 6 -->
+            <div class="card" style="padding: 32px; transition: all 0.3s;">
+                <div style="width: 56px; height: 56px; background: linear-gradient(135deg, #FA055B 0%, #C70449 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 28px; margin-bottom: 20px;">✨</div>
+                <h4 style="font-size: 20px; font-weight: 600; margin-bottom: 12px; color: #1F2937;">Modern Experience</h4>
+                <p style="color: #6B7280; line-height: 1.6;">Enjoy a sleek, modern interface designed for ease of use. Book tables on any device, anywhere, anytime.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer style="background: #1F2937; color: white; text-align: center; padding: 40px 24px; margin-top: 80px;">
+        <p style="opacity: 0.8; margin: 0;">&copy; 2025 RestoBook. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>

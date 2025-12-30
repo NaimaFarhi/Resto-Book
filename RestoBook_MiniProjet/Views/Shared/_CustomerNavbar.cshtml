@@ -1,0 +1,16 @@
+﻿<nav class="top-nav">
+    <h2 style="margin: 0;">RestoBook</h2>
+
+    <div style="display: flex; align-items: center; gap: 24px;">
+        <a href="/Reservations/MyReservations">My Reservations</a>
+        <a href="/Reservations/Create">Book a Table</a>
+        <a href="/Menu" class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Menu" ? "active" : "")">
+            Menu
+        </a>
+        <a href="/Availability">Availability</a>
+
+        <form method="post" action="/Account/Logout" style="display:inline; margin: 0;">
+            <button class="btn btn-primary" style="padding: 8px 16px;">Logout</button>
+        </form>
+    </div>
+</nav>

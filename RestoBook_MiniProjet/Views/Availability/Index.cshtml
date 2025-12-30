@@ -1,0 +1,74 @@
+﻿@model IEnumerable<RestoBook_MiniProjet.ViewModels.Availability.AvailabilityViewModel>
+
+<div class="dashboard-container">
+    <div class="page-header">
+        <h2>Table Availability</h2>
+    </div>
+
+    <!-- Filter Card -->
+    <div class="card" style="margin-bottom: 24px;">
+        <form method="get" style="display: flex; gap: 20px; align-items: flex-end;">
+            <div>
+                <label style="display: block; font-size: 14px; color: #6B7280; margin-bottom: 6px;">Select Date</label>
+                <input type="date" 
+                       name="date" 
+                       value="@ViewBag.SelectedDate.ToString("yyyy-MM-dd")" 
+                       style="padding: 10px 12px; border: 1px solid #E5E7EB; border-radius: 6px; min-width: 200px;" />
+            </div>
+            <div>
+                <label style="display: block; font-size: 14px; color: #6B7280; margin-bottom: 6px;">Select Time (Optional)</label>
+                <input type="time" 
+                       name="time" 
+                       value="@ViewBag.SelectedTime"
+                       style="padding: 10px 12px; border: 1px solid #E5E7EB; border-radius: 6px; min-width: 150px;" />
+            </div>
+            <div>
+                <button type="submit" class="btn btn-primary">Check Availability</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="table-card">
+        <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Table</th>
+                        <th>Capacity</th>
+                        <th>Status</th>
+                        <th>Reservation Period</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var t in Model)
+                    {
+                        <tr>
+                            <td>Table @t.TableNumber</td>
+                            <td>@t.Capacity Persons</td>
+                            <td>
+                                @if (t.IsAvailable)
+                                {
+                                    <span class="badge badge-confirmed">Available</span>
+                                }
+                                else
+                                {
+                                    <span class="badge badge-refused">Unavailable</span>
+                                }
+                            </td>
+                            <td>
+                                @if (!t.IsAvailable)
+                                {
+                                    <span style="color:#6B7280; font-size:14px;">@t.ReservationPeriod</span>
+                                }
+                                else
+                                {
+                                    <span style="color:#9CA3AF; font-size:14px;">-</span>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

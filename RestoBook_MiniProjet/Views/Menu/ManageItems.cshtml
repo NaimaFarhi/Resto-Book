@@ -1,0 +1,116 @@
+﻿@model List<RestoBook_MiniProjet.ViewModels.Menu.MenuItemViewModel>
+
+<div class="dashboard-container">
+    <div class="page-header">
+        <h2>Manage Menu Items</h2>
+        <div style="display: flex; gap: 12px;">
+            <a href="/Menu/ManageCategories" class="btn">Manage Categories</a>
+            <a href="/Menu/CreateItem" class="btn btn-primary">Add Item</a>
+        </div>
+    </div>
+
+    <div class="card" style="margin-bottom: 24px;">
+        <div style="display: flex; gap: 20px; align-items: flex-end;">
+            <div style="flex: 1;">
+                <label style="display: block; font-size: 14px; color: #6B7280; margin-bottom: 6px;">Search Items</label>
+                <input type="text"
+                       id="itemSearchInput"
+                       placeholder="Search by item name, category or price..."
+                       style="width: 100%; padding: 10px 12px; border: 1px solid #E5E7EB; border-radius: 6px;" />
+            </div>
+        </div>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="card" style="text-align: center; padding: 40px;">
+            <p style="color: #6B7280; margin-bottom: 20px;">No menu items yet.</p>
+            <a href="/Menu/CreateItem" class="btn btn-primary">Create First Item</a>
+        </div>
+    }
+    else
+    {
+        <div class="card">
+            <div style="overflow-x: auto;">
+                <table style="width: 100%; border-collapse: collapse;" id="itemsTable">
+                    <thead>
+                        <tr style="border-bottom: 2px solid #E5E7EB;">
+                            <th style="padding: 12px; text-align: left;">Name</th>
+                            <th style="padding: 12px; text-align: left;">Category</th>
+                            <th style="padding: 12px; text-align: left;">Price</th>
+                            <th style="padding: 12px; text-align: left;">Status</th>
+                            <th style="padding: 12px; text-align: left;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr style="border-bottom: 1px solid #E5E7EB;">
+                                <td style="padding: 12px;">
+                                    <div style="display: flex; align-items: center; gap: 12px;">
+                                        @if (!string.IsNullOrEmpty(item.ImageUrl))
+                                        {
+                                            <img src="@item.ImageUrl" alt="@item.Name"
+                                                 style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px;" />
+                                        }
+                                        <div>
+                                            <div style="font-weight: 500;">@item.Name</div>
+                                            @if (!string.IsNullOrEmpty(item.Description))
+                                            {
+                                                <div style="font-size: 12px; color: #6B7280;">
+                                                    @(item.Description.Length > 50 ? item.Description.Substring(0, 50) + "..." : item.Description)
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </td>
+                                <td style="padding: 12px;">@item.CategoryName</td>
+                                <td style="padding: 12px; font-weight: 600;">$@item.Price.ToString("F2")</td>
+                                <td style="padding: 12px;">
+                                    @if (item.IsAvailable)
+                                    {
+                                        <span style="color: #059669; font-weight: 500;">Available</span>
+                                    }
+                                    else
+                                    {
+                                        <span style="color: #DC2626; font-weight: 500;">Unavailable</span>
+                                    }
+                                </td>
+                                <td style="padding: 12px;">
+                                    <div style="display: flex; gap: 8px;">
+                                        <a href="/Menu/EditItem/@item.Id" class="btn btn-sm">Edit</a>
+                                        <form method="post" action="/Menu/DeleteItem/@item.Id" style="display: inline;"
+                                              onsubmit="return confirm('Delete this item?');">
+                                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+</div>
+
+<script>
+    document.getElementById('itemSearchInput').addEventListener('keyup', function() {
+        const searchText = this.value.toLowerCase();
+        const table = document.getElementById('itemsTable');
+        const rows = table.getElementsByTagName('tr');
+
+        // Start from 1 to skip header
+        for (let i = 1; i < rows.length; i++) {
+            const row = rows[i];
+            // Get all text content from the row
+            const rowData = row.textContent || row.innerText;
+
+            if (rowData.toLowerCase().indexOf(searchText) > -1) {
+                row.style.display = "";
+            } else {
+                row.style.display = "none";
+            }
+        }
+    });
+</script>

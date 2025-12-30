@@ -1,0 +1,60 @@
+@using RestoBook_MiniProjet.ViewModels.Tables
+@model IEnumerable<TableListViewModel>
+
+<div class="table-card">
+    <div class="table-responsive">
+        <table>
+            <thead>
+                <tr>
+                    <th>Table #</th>
+                    <th>Capacity</th>
+                    <th>Active</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var t in Model)
+                {
+                    <tr>
+                        <td>Table @t.TableNumber</td>
+                        <td>@t.Capacity Persons</td>
+                        <td>
+                            @if (t.IsActive)
+                            {
+                                <span class="badge badge-confirmed">Active</span>
+                            }
+                            else
+                            {
+                                <span class="badge badge-refused">Inactive</span>
+                            }
+                        </td>
+                        <td>
+                            <a href="/Tables/Edit/@t.Id" class="btn btn-sm btn-primary">Edit</a>
+                            <form method="post" action="/Tables/Delete/@t.Id" style="display:inline;">
+                                <button type="submit" class="btn btn-sm btn-danger" 
+                                        onclick="return confirm('Delete this table?')">
+                                    Delete
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div style="margin-top:20px; display:flex; justify-content:center; gap:10px;">
+    @{
+        var prevDisabled = ViewBag.CurrentPage > 1 ? "" : "disabled";
+        var nextDisabled = ViewBag.CurrentPage < ViewBag.TotalPages ? "" : "disabled";
+        var prevUrl = ViewBag.CurrentPage > 1 ? $"/Tables?page={ViewBag.CurrentPage - 1}&searchString={ViewBag.SearchString}" : "#";
+        var nextUrl = ViewBag.CurrentPage < ViewBag.TotalPages ? $"/Tables?page={ViewBag.CurrentPage + 1}&searchString={ViewBag.SearchString}" : "#";
+    }
+
+    <a href="@prevUrl" class="btn @prevDisabled" style="@(ViewBag.CurrentPage > 1 ? "" : "pointer-events:none; opacity:0.5;")">Previous</a>
+    
+    <span style="align-self:center;">Page @ViewBag.CurrentPage of @ViewBag.TotalPages</span>
+
+    <a href="@nextUrl" class="btn @nextDisabled" style="@(ViewBag.CurrentPage < ViewBag.TotalPages ? "" : "pointer-events:none; opacity:0.5;")">Next</a>
+</div>

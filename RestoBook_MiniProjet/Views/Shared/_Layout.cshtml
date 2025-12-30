@@ -1,0 +1,35 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>RestoBook</title>
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+
+    @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+    {
+        <div class="admin-layout">
+            @await Html.PartialAsync("_AdminSidebar")
+
+            <main class="content">
+                @RenderBody()
+            </main>
+        </div>
+    }
+    else if (User.Identity.IsAuthenticated)
+    {
+        @await Html.PartialAsync("_CustomerNavbar")
+
+        <main style="padding:30px">
+            @RenderBody()
+        </main>
+    }
+    else
+    {
+        <main>
+            @RenderBody()
+        </main>
+    }
+    
+</body>
+</html>

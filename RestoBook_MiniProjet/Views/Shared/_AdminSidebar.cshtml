@@ -1,0 +1,27 @@
+﻿<aside class="sidebar" style="display: flex; flex-direction: column;">
+    <div>
+        <h2>RestoBook</h2>
+
+        <a href="/Admin/Dashboard">Dashboard</a>
+        <a href="/Reservations">Reservations</a>
+        <!-- Menu Management Section -->
+        <div class="sidebar-section">
+            
+            <a href="/Menu" class="sidebar-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Menu" && ViewContext.RouteData.Values["action"]?.ToString() == "Index" ? "active" : "")">
+                <span>View Menu</span>
+            </a>
+            <a href="/Menu/ManageCategories" class="sidebar-link @(ViewContext.RouteData.Values["action"]?.ToString() == "ManageCategories" ? "active" : "")">
+                <span>Categories</span>
+            </a>
+            <a href="/Menu/ManageItems" class="sidebar-link @(ViewContext.RouteData.Values["action"]?.ToString() == "ManageItems" ? "active" : "")">
+                <span>Menu Items</span>
+            </a>
+        </div>
+        <a href="/Tables">Tables</a>
+        <a href="/Availability">Availability</a>
+    </div>
+
+    <form method="post" action="/Account/Logout" style="margin-top: auto;">
+        <button class="btn btn-primary" style="width:100%">Logout</button>
+    </form>
+</aside>
